@@ -1,0 +1,434 @@
+
+###   GETTING A LIST OF CLIENT'S ACCOUNTS (ПОЛУЧЕНИЕ СПИСКА СЧЕТОВ КЛИЕНТОВ)
+
+#----------------------------------------------------------------------------#
+#                POSITIVE TEST CASES (ВЕРНЫЕ РЕЗУЛЬТАТЫ ЗАПРОСОВ)            #
+#----------------------------------------------------------------------------#
+
+// Getting client's accounts with id = 4f9a97c4-8300-11ee-b962-0242ac120010
+// Получение счетов клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120010
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts
+###
+// Getting client's accounts with id = 4f9a97c4-8300-11ee-b962-0242ac120010
+// Получение счетов клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120011
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts
+###
+// Getting client's accounts with id = 4f9a97c4-8300-11ee-b962-0242ac120010
+// Получение счетов клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120012
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts
+###
+
+#----------------------------------------------------------------------------#
+#                NEGATIVE TEST CASES (НЕВЕРНЫЕ РЕЗУЛЬТАТЫ ЗАПРОСОВ)          #
+#----------------------------------------------------------------------------#
+
+// Invalid UUID string(Bad request) (Некоректный ввод id)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962/accounts
+###
+// Client not found (Клиент не найден)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120099/accounts
+
+
+###             GETTING ACCOUNT'S AMOUNT (ПОЛУЧЕНИЕ БАЛАНСА СЧЕТА)
+
+#----------------------------------------------------------------------------#
+#                POSITIVE TEST CASES (ВЕРНЫЕ РЕЗУЛЬТАТЫ ЗАПРОСОВ)            #
+#----------------------------------------------------------------------------#
+
+// Getting account's amount: 12345678910111213150 client with id = 4f9a97c4-8300-11ee-b962-0242ac120010
+// Получение баланса счета: 12345678910111213150  клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120010
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+// Getting account's amount: 12345678910111213149 client with id = 4f9a97c4-8300-11ee-b962-0242ac120010
+// Получение баланса счета: 12345678910111213149  клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120010
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213149
+###
+// Getting account's amount: 12345678910111213148 client with id = 4f9a97c4-8300-11ee-b962-0242ac120011
+// Получение баланса счета: 12345678910111213148  клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120011
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts/12345678910111213148
+###
+// Getting account's amount: 12345678910111213147 client with id = 4f9a97c4-8300-11ee-b962-0242ac120010
+// Получение баланса счета: 12345678910111213147  клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120010
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+
+#----------------------------------------------------------------------------#
+#                NEGATIVE TEST CASES (НЕВЕРНЫЕ РЕЗУЛЬТАТЫ ЗАПРОСОВ)          #
+#----------------------------------------------------------------------------#
+
+// Account not found (Аккаунт не найден)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213148
+###
+// Incorrect account number (Неверный номер счета)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213121321123123
+###
+// Incorrect account number (Неверный номер счета))
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/123456789101112131qwe
+
+
+###          ADDING AN AMOUNT TO AN ACCOUNT (ЗАЧИСЛЕНИЯ СРЕДСТВ НА СЧЕТ)
+
+#----------------------------------------------------------------------------#
+#                POSITIVE TEST CASES (ВЕРНЫЕ РЕЗУЛЬТАТЫ ЗАПРОСОВ)            #
+#----------------------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+
+// Зачисление средств на счет: 12345678910111213150, клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120010
+// Adding an amount to an account: 12345678910111213150 client with id = 4f9a97c4-8300-11ee-b962-0242ac120010
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts
+Content-Type: application/json
+
+{
+"accountNumber": 12345678910111213150,
+"amount": 123
+}
+###
+
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+
+#----------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213149
+###
+
+// Зачисление средств на счет: 12345678910111213149, клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120010
+// Adding an amount to an account: 12345678910111213149 client with id = 4f9a97c4-8300-11ee-b962-0242ac120010
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": 12345678910111213149,
+  "amount": 100.50
+}
+###
+
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213149
+###
+
+#----------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts/12345678910111213148
+###
+
+// Зачисление средств на счет: 12345678910111213148, клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120011
+// Adding an amount to an account: 12345678910111213148 client with id = 4f9a97c4-8300-11ee-b962-0242ac120011
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": 12345678910111213148,
+  "amount": 1000
+}
+
+###
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts/12345678910111213148
+###
+
+#----------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+
+// Зачисление средств на счет: 12345678910111213147, клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120012
+// Adding an amount to an account: 12345678910111213147 client with id = 4f9a97c4-8300-11ee-b962-0242ac120012
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": 12345678910111213147,
+  "amount": 0.99
+}
+###
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+
+#----------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+
+// Зачисление средств на счет: 12345678910111213147, клиента с id = 4f9a97c4-8300-11ee-b962-0242ac120012
+// Adding an amount to an account: 12345678910111213147 client with id = 4f9a97c4-8300-11ee-b962-0242ac120012
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": 12345678910111213147,
+  "amount": 1000000000
+}
+###
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+
+#----------------------------------------------------------------------------#
+#                NEGATIVE TEST CASES (НЕВЕРНЫЕ РЕЗУЛЬТАТЫ ЗАПРОСОВ)          #
+#----------------------------------------------------------------------------#
+
+// Account not found (Аккаунт не найден)
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": 12345678910111213149,
+  "amount": 0.99
+}
+###
+// Incorrect account number (Некоректный номер счета)
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": 1234567891011121314,
+  "amount": 13
+}
+###
+// Incorrect account number (Некоректный номер счета)
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": 123456789101112131499,
+  "amount": 13
+}
+###
+// Incorrect account number (Некоректный номер счета)
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": "1234567891011121314q4",
+  "amount": 13
+}
+
+###
+// Incorrect amount (Некоректная сумма)
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": "12345678910111213147",
+  "amount": -12
+}
+###
+// Incorrect amount (Некоректная сумма)
+PATCH http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts
+Content-Type: application/json
+
+{
+  "accountNumber": "12345678910111213147",
+  "amount": 0
+}
+
+
+###     TRANSFERS BETWEEN CLIENTS IN THE SAME CURRENCY (ПЕРЕВОДЫ МЕЖДУ КЛИЕНТАМИ В ОДНОЙ ВАЛЮТЕ)
+
+#----------------------------------------------------------------------------#
+#                POSITIVE TEST CASES (ВЕРНЫЕ РЕЗУЛЬТАТЫ ЗАПРОСОВ)            #
+#----------------------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts/12345678910111213148
+###
+
+// Совершение перевода кслиента с id = 4f9a97c4-8300-11ee-b962-0242ac120010 со счета: 12345678910111213150
+// на счет: 12345678910111213148 (перевод с RUR на RUR)
+POST http://localhost:8081/api/v1/clients/4f9a97c4-8300-11ee-b962-0242ac120010/transfer
+Content-Type: application/json
+
+{
+  "accountNumberSender": 12345678910111213150,
+  "accountNumberRecipient": 12345678910111213148,
+  "amount": 50
+}
+###
+
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts/12345678910111213148
+###
+
+#----------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213149
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+
+// Совершение перевода кслиента с id = 4f9a97c4-8300-11ee-b962-0242ac120010 со счета: 12345678910111213149
+// на счет: 12345678910111213147 (перевод с USD на USD)
+POST http://localhost:8081/api/v1/clients/4f9a97c4-8300-11ee-b962-0242ac120010/transfer
+Content-Type: application/json
+
+{
+  "accountNumberSender": 12345678910111213149,
+  "accountNumberRecipient": 12345678910111213147,
+  "amount": 100
+}
+###
+
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213149
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+
+#----------------------------------------------------------------------------#
+#                NEGATIVE TEST CASES (НЕВЕРНЫЕ РЕЗУЛЬТАТЫ ЗАПРОСОВ)          #
+#----------------------------------------------------------------------------#
+
+// Client not found (Клиент не найден)
+POST http://localhost:8081/api/v1/clients/4f9a97c4-8300-11ee-b962-0242ac120099/transfer
+Content-Type: application/json
+
+{
+  "accountNumberSender": 12345678910111213150,
+  "accountNumberRecipient": 12345678910111213148,
+  "amount": 50
+}
+###
+// Account not found (Счет не найден)
+POST http://localhost:8081/api/v1/clients/4f9a97c4-8300-11ee-b962-0242ac120010/transfer
+Content-Type: application/json
+
+{
+  "accountNumberSender": 12345678910111213151,
+  "accountNumberRecipient": 12345678910111213148,
+  "amount": 50
+}
+###
+// Invalid transfer, account number = 12345678910111213151 not found
+// (Невалидная транзакция, счет получателя с номером 12345678910111213151 не найден)
+POST http://localhost:8081/api/v1/clients/4f9a97c4-8300-11ee-b962-0242ac120010/transfer
+Content-Type: application/json
+
+{
+  "accountNumberSender": 12345678910111213150,
+  "accountNumberRecipient": 12345678910111213151,
+  "amount": 50
+}
+###
+
+#----------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts/12345678910111213148
+###
+
+// Invalid transaction (the sender's amount must be less than his balance)
+// Невалидная транзакция (сумма отправителя должна быть меньше его баланса)
+POST http://localhost:8081/api/v1/clients/4f9a97c4-8300-11ee-b962-0242ac120010/transfer
+Content-Type: application/json
+
+{
+  "accountNumberSender": 12345678910111213150,
+  "accountNumberRecipient": 12345678910111213148,
+  "amount": 50000000
+}
+###
+
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts/12345678910111213148
+###
+
+#----------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts/12345678910111213148
+###
+
+// Invalid transaction (the sender's amount must be less than his balance)
+// Невалидная транзакция (сумма отправителя должна быть меньше его баланса)
+POST http://localhost:8081/api/v1/clients/4f9a97c4-8300-11ee-b962-0242ac120010/transfer
+Content-Type: application/json
+
+{
+  "accountNumberSender": 12345678910111213150,
+  "accountNumberRecipient": 12345678910111213148,
+  "amount": 0
+}
+###
+
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120011/accounts/12345678910111213148
+
+
+###     TRANSFERS BETWEEN CLIENTS IN THE DIFFERENT CURRENCY (ПЕРЕВОДЫ МЕЖДУ КЛИЕНТАМИ В РАЗНЫХ ВАЛЮТЕ)
+
+#----------------------------------------------------------------------------#
+#                POSITIVE TEST CASES (ВЕРНЫЕ РЕЗУЛЬТАТЫ ЗАПРОСОВ)            #
+#----------------------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+
+// Совершение перевода кслиента с id = 4f9a97c4-8300-11ee-b962-0242ac120010 со счета: 12345678910111213150
+// на счет: 12345678910111213147 (перевод с RUR на USD)
+POST http://localhost:8081/api/v1/clients/4f9a97c4-8300-11ee-b962-0242ac120010/transfer
+Content-Type: application/json
+
+{
+  "accountNumberSender": 12345678910111213150,
+  "accountNumberRecipient": 12345678910111213147,
+  "amount": 50
+}
+###
+
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+
+#----------------------------------------------------------------#
+
+// Check before transfer (Проверка до перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
+
+// Совершение перевода кслиента с id = 4f9a97c4-8300-11ee-b962-0242ac120012 со счета: 12345678910111213147
+// на счет: 12345678910111213150 (перевод с USD на RUR)
+POST http://localhost:8081/api/v1/clients/4f9a97c4-8300-11ee-b962-0242ac120012/transfer
+Content-Type: application/json
+
+{
+  "accountNumberSender": 12345678910111213147,
+  "accountNumberRecipient": 12345678910111213150,
+  "amount": 1
+}
+###
+
+// Check after transfer (Проверка после перевода)
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120012/accounts/12345678910111213147
+###
+GET http://localhost:8081/api/v1/4f9a97c4-8300-11ee-b962-0242ac120010/accounts/12345678910111213150
+###
