@@ -30,7 +30,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode
 @Table(name = "transactions")
 public class Transaction {
     @Id

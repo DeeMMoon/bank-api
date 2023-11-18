@@ -4,13 +4,16 @@
 CREATE TABLE clients
 (
     id UUID DEFAULT RANDOM_UUID() PRIMARY KEY,
+    personal_id varchar(30) NOT NULL,
     first_name varchar(20) NOT NULL,
     last_name varchar(20) NOT NULL,
     age integer NOT NULL,
     email varchar(100) NOT NULL,
     gender varchar (10) NOT NULL,
     address varchar (200) NOT NULL,
-    phone varchar (20)
+    phone varchar (20),
+    created_time TIMESTAMP,
+    last_modified_time TIMESTAMP
 );
 --changeset divantsov:2
 CREATE TABLE accounts

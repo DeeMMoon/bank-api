@@ -26,4 +26,13 @@ public class ClientExceptionHandler {
         );
         return new ResponseEntity<>(clientExceptionResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(ClientCreateException.class)
+    private ResponseEntity<ExceptionResponse> clientExceptionHandler(ClientCreateException e){
+        ExceptionResponse clientExceptionResponse = new ExceptionResponse(
+                e.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(clientExceptionResponse, HttpStatus.CONFLICT);
+    }
 }

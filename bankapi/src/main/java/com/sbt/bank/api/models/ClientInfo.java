@@ -1,9 +1,14 @@
 package com.sbt.bank.api.models;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Converter;
 import jakarta.persistence.Embeddable;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -25,6 +30,11 @@ import lombok.Setter;
 @EqualsAndHashCode
 @Embeddable
 public class ClientInfo {
+
+    @NotBlank
+    @Size(min = 5, max = 30)
+    @Column(name = "personal_id")
+    private String personalID;
 
     @NotBlank
     @Size(min = 1, max = 20)
@@ -55,6 +65,7 @@ public class ClientInfo {
     @NotNull
     private String address;
 
-    @Pattern(regexp = "^(\\\\+\\\\d{1,3}( )?)?((\\\\(\\\\d{1,3}\\\\))|\\\\d{1,3})[- .]?\\\\d{3,4}[- .]?\\\\d{4}$")
+    @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$",
+            message = "Incorrect phone format, support formats: +xxx (xxx) xxx xxxx (delimiters: \"-\", \" \" and without")
     private String phone;
 }
