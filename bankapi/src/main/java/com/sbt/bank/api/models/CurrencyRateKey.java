@@ -4,6 +4,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -20,12 +21,13 @@ import java.io.Serializable;
 @Setter
 @Embeddable
 public class CurrencyRateKey implements Serializable {
-    @NonNull
+
+    @NotNull(message = "Converter currency must not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "converter_currency")
     private Currency converterCurrency;
 
-    @NonNull
+    @NotNull(message = "Converted currency must not be null")
     @Enumerated(EnumType.STRING)
     @Column(name = "converted_currency")
     private Currency convertedCurrency;

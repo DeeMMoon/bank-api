@@ -51,7 +51,7 @@ public class AccountController {
     public AccountResponseDTO addDepositToTheAccountBalance(@PathVariable(value = "clientId") UUID id,
                                               @RequestBody @Valid AccountRequestDTO accountRequestDTO) {
         var accounts = clientService.getAccountsByClientId(id);
-        Account account = accountService.findAccountByAccountNumber(accountRequestDTO.accountNumber(), accounts);
+        var account = accountService.findAccountByAccountNumber(accountRequestDTO.accountNumber(), accounts);
         return AccountResponseDTO.map(accountService.addDepositToTheAccountBalance(account, accountRequestDTO.amount()));
     }
 

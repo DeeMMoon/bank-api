@@ -36,12 +36,12 @@ public class ClientModificationHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @NotNull
+    @NotNull(message = "Client Id must not be null")
     private UUID clientId;
 
     @Embedded
     private ClientInfo clientInfo;
 
-    @NotNull
+    @NotNull(message = "Modified time must not be null")
     private LocalDateTime modifiedTime;
 }

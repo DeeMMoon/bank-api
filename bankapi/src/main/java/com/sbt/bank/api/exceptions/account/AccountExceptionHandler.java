@@ -25,4 +25,22 @@ public class AccountExceptionHandler{
         );
         return new ResponseEntity<>(accountExceptionResponse, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(TooLongTimeGenerationAccountNumberException.class)
+    private ResponseEntity<ExceptionResponse> accountExceptionHandler(TooLongTimeGenerationAccountNumberException e){
+        ExceptionResponse accountExceptionResponse = new ExceptionResponse(
+                e.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(accountExceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(AccountIsBlockedException.class)
+    private ResponseEntity<ExceptionResponse> accountExceptionHandler(AccountIsBlockedException e){
+        ExceptionResponse accountExceptionResponse = new ExceptionResponse(
+                e.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(accountExceptionResponse, HttpStatus.BAD_REQUEST);
+    }
 }

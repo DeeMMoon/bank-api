@@ -1,6 +1,9 @@
 package com.sbt.bank.api.controllers;
 
 import com.sbt.bank.api.dto.TransactionDTO;
+import com.sbt.bank.api.exceptions.account.AccountIsBlockedException;
+import com.sbt.bank.api.models.Transaction;
+import com.sbt.bank.api.models.TransactionStatus;
 import com.sbt.bank.api.services.IAccountService;
 import com.sbt.bank.api.services.IClientService;
 import com.sbt.bank.api.services.ITransactionService;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @RestController
@@ -32,10 +36,12 @@ public class ClientController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/{clientId}/transfer")
-    public void sendAmountToClient(@PathVariable(value = "clientId") UUID id,
+    public TransactionDTO sendAmountToClient(@PathVariable(value = "clientId") UUID id,
                                    @RequestBody @Valid TransactionDTO transactionDTO) {
         accountService.findAccountByAccountNumber(transactionDTO.accountNumberSender(), clientService.getAccountsByClientId(id));
-        transactionService.doTransaction(transactionDTO);
+        var transaction = transactionService.createTransaction(transactionDTO);
+        transaction = transactionService.updateTransactionStatus(TransactionStatus.PROCESSED, transaction).get();
+        return TransactionDTO.map(transaction);
     }
 
 }

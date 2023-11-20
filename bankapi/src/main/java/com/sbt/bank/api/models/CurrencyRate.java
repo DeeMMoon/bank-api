@@ -5,12 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.Setter;
 
 import java.math.BigDecimal;
@@ -21,13 +20,13 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
-@EqualsAndHashCode
 @Table(name = "currency_rate")
 public class CurrencyRate {
-    @Id
+
     @EmbeddedId
     private CurrencyRateKey id;
+
     @Min(value = 0)
-    @NonNull
+    @NotNull(message = "Last modified time must not be null")
     private BigDecimal rate;
 }

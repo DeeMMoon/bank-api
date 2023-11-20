@@ -6,18 +6,13 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.UuidGenerator;
-import org.springframework.data.annotation.LastModifiedDate;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -31,6 +26,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "clients")
 public class Client {
+
     @Id
     @UuidGenerator
     @Column(name = "id")
@@ -39,10 +35,10 @@ public class Client {
     @Embedded
     private ClientInfo clientInfo;
 
-    @NotNull
+    @NotNull(message = "Client created time must not be null")
     private LocalDateTime createdTime;
 
-    @NotNull
+    @NotNull(message = "Last modified time must not be null")
     private LocalDateTime lastModifiedTime;
 
     @OneToMany(mappedBy = "client")

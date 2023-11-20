@@ -10,6 +10,7 @@ import java.util.UUID;
 
 public interface ITransactionService {
     Optional<Transaction> findTransactionById(UUID id);
-    void doTransaction(TransactionDTO transactionDTO);
+    void doTransaction(Transaction transaction);
     Optional<Transaction> updateTransactionStatus(TransactionStatus status, Transaction transaction);
+    Transaction createTransaction(TransactionDTO transactionDTO);
 }

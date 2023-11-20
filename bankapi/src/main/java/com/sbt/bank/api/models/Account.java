@@ -9,15 +9,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,27 +31,29 @@ import java.util.UUID;
 @Entity
 @Table(name = "accounts")
 public class Account{
+
     @Id
     @UuidGenerator
     private UUID id;
 
     @Column(name = "number")
     @Pattern(message = "Incorrect account number", regexp = "^[0-9]{20}$")
-    @NotBlank
+    @NotBlank(message = "The account number must not be blank")
+    @Size(min = 20, max = 20, message = "The length of the account number must be 20 digits")
     private String accountNumber;
 
     @Column(name = "currency_type")
-    @NotNull
+    @NotNull(message = "Currency must not be null")
     @Enumerated(EnumType.STRING)
     private Currency currency;
 
     @Column(name = "amount",  columnDefinition="Default '0.00'")
-    @DecimalMin(value = "0.0")
-    @NotNull
+    @DecimalMin(value = "0.00")
+    @NotNull(message = "Amount must not be null")
     private BigDecimal amount;
 
     @Column(name = "is_blocked")
-    @NotNull
+    @NotNull(message = "Account status must not be null")
     private Boolean isBlocked;
 
     @ManyToOne

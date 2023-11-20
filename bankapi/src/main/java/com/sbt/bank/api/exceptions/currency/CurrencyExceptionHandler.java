@@ -1,6 +1,7 @@
 package com.sbt.bank.api.exceptions.currency;
 
 import com.sbt.bank.api.exceptions.ExceptionResponse;
+import com.sbt.bank.api.exceptions.currency.rate.CurrencyRateNotFoundException;
 import com.sbt.bank.api.exceptions.transaction.IllegalTransactionException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,5 +17,13 @@ public class CurrencyExceptionHandler {
                 System.currentTimeMillis()
         );
         return new ResponseEntity<>(clientExceptionResponse, HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(CurrencyNotFoundException.class)
+    private ResponseEntity<ExceptionResponse> currencyExceptionHandler(CurrencyNotFoundException e){
+        ExceptionResponse clientExceptionResponse = new ExceptionResponse(
+                e.getMessage(),
+                System.currentTimeMillis()
+        );
+        return new ResponseEntity<>(clientExceptionResponse, HttpStatus.NOT_FOUND);
     }
 }
